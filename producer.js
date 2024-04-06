@@ -1,4 +1,10 @@
 const {kafka} = require('./client')
+const readline = require('readline')
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
 
 async function init() {
   const producer = kafka.producer();
@@ -9,21 +15,30 @@ async function init() {
   console.log(
       "******************** Producer connection: SUCCESS *********************");
 
-  await producer.send({
-    topic: "rider-updates",
-    messages: [{
-      key: 'location-update', value: JSON.stringify({
-        name: 'John Doe',
-        location: 'Kolkata'
-      })
-    }]
-  })
+  rl.setPrompt('>');
+  rl.prompt();
 
-  console.log(
-      "******************** Producer dis-connection: IN PROGRESS *********************");
-  await producer.disconnect();
-  console.log(
-      "******************** Producer dis-connection: SUCCESS *********************");
+  rl.on('line', async function (line) {
+    const [riderName, location] = line.split(" ")
+    await producer.send({
+      topic: "rider-updates",
+      messages: [
+        {
+          partition: location.toLowerCase() === "kolkata" ? 0 : 1,
+          key: 'location-update',
+          value: JSON.stringify({
+            name: riderName,
+            location: location
+          })
+        }]
+    })
+  }).on('close', async () => {
+    console.log(
+        "******************** Producer dis-connection: IN PROGRESS *********************");
+    await producer.disconnect();
+    console.log(
+        "******************** Producer dis-connection: SUCCESS *********************");
+  })
 
 }
 
