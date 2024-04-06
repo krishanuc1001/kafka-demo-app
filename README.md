@@ -48,15 +48,20 @@ node producer.js
 ### 5. Start the Consumer
 The consumer script listens for messages from a Kafka topic.
 
+```
 node consumer.js
+```
+
 
 ### Configuration
 You can configure the Kafka connection and topic settings in the config.js file.
 
+`
 module.exports = {
   kafkaBrokers: ['localhost:9092'],
   kafkaTopic: 'demo-topic'
 };
+`
 
 
 ### Project Structure
