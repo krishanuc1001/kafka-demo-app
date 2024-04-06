@@ -15,7 +15,7 @@ async function init() {
   })
 
   await consumer.run({
-    eachMessage: async ({topic, partition, message, heartbeat, pause}) => {
+    eachMessage: async ({topic, partition, message}) => {
       console.log(
           `TOPIC: ${topic}, 
            PARTITION: ${partition}`,
