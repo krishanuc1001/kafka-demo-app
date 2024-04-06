@@ -1,4 +1,4 @@
-# Kafka Demo App
+# Kafka Demo App Using `kafkajs`
 
 This is a sample Kafka demo application that demonstrates the basic usage of the `kafkajs` library in Node.js to produce and consume messages with Apache Kafka.
 
