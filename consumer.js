@@ -1,7 +1,8 @@
-const {kafka} = require('./client')
+const {kafka} = require('./client');
+const group = process.argv[2];
 
 async function init() {
-  const consumer = kafka.consumer({groupId: 'kolkata-WB'});
+  const consumer = kafka.consumer({groupId: group});
 
   console.log(
       "******************** Consumer connection: IN PROGRESS *********************");
@@ -17,9 +18,10 @@ async function init() {
   await consumer.run({
     eachMessage: async ({topic, partition, message}) => {
       console.log(
-          `TOPIC: ${topic}, 
-           PARTITION: ${partition}`,
-           message.value.toString()
+          `GROUP: ${group}`,
+          `TOPIC: ${topic}`,
+          `PARTITION: ${partition}`,
+          message.value.toString()
       )
     }
   })
